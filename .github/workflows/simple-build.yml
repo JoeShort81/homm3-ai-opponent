@@ -1,4 +1,4 @@
-name: Build Simple HoMM3 AI Executable
+name: Build Heroes III AI Applications
 
 on:
   push:
@@ -22,21 +22,21 @@ jobs:
           
       - name: Build Windows executables
         run: |
-          pip install pyinstaller
-          pyinstaller --onefile --windowed --name "HoMM3-AI-Opponent" --add-data "VERSION.txt;." homm3_ai_ultra_simple.py
+          pip install pyinstaller opencv-python pillow pyautogui
+          pyinstaller --onefile --windowed --name "HoMM3-AI-Controller" --add-data "VERSION.txt;." homm3_real_ai.py
           pyinstaller --onefile --windowed --name "HoMM3-AI-Game" --add-data "VERSION.txt;." homm3_game_simulator.py
           
       - name: Verify executable exists
         run: |
           dir dist
-          echo "Executable built successfully"
+          echo "Executables built successfully"
           
       - name: Upload Windows executables
         uses: actions/upload-artifact@v4
         with:
           name: HoMM3-AI-Windows
           path: |
-            dist/HoMM3-AI-Opponent.exe
+            dist/HoMM3-AI-Controller.exe
             dist/HoMM3-AI-Game.exe
 
   create-release:
@@ -53,28 +53,29 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            HoMM3-AI-Windows/HoMM3-AI-Opponent.exe
+            HoMM3-AI-Windows/HoMM3-AI-Controller.exe
             HoMM3-AI-Windows/HoMM3-AI-Game.exe
           body: |
-            ## Heroes III AI Opponent v${{ github.ref_name }}
+            ## Heroes III AI Controller v${{ github.ref_name }}
             
-            **Two versions available - download and double-click to run!**
+            **Two AI applications - download and run immediately!**
             
-            ### HoMM3-AI-Opponent.exe
-            - File monitor for VCMI integration
-            - Advanced users can configure VCMI to communicate with this
+            ### HoMM3-AI-Controller.exe ⭐ THE REAL THING
+            - **Controls actual Heroes III game using computer vision**
+            - Analyzes game screen and makes intelligent decisions
+            - Automates mouse/keyboard to play the real game
+            - Works with any Heroes III version (original, HD, VCMI)
+            
+            **How to use the Controller:**
+            1. Start Heroes III and begin a game
+            2. Run HoMM3-AI-Controller.exe
+            3. Select AI strategy (exploration/aggressive/resource gathering)
+            4. Click "Start AI" - it will take over and play for you!
             
             ### HoMM3-AI-Game.exe
-            - Complete standalone Heroes III-style game
-            - Play immediately against intelligent AI
-            - Turn-based strategy with armies, resources, and combat
+            - Standalone Heroes III-style strategy game
+            - Practice against AI without needing the real game
             
-            ### How to use HoMM3-AI-Game.exe:
-            1. Download and run HoMM3-AI-Game.exe
-            2. Use buttons to recruit units, capture locations
-            3. Click "End Turn" to let AI play
-            4. Battle until one side wins!
-            
-            No installation or setup required for either version!
+            **Requirements:** Windows with Heroes III for the Controller version.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
