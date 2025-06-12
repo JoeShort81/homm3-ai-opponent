@@ -1,9 +1,14 @@
 name: Build Simple HoMM3 AI Executable
+
 on:
   push:
     tags:
       - 'v*'
   workflow_dispatch:
+
+permissions:
+  contents: write
+
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -18,7 +23,7 @@ jobs:
       - name: Build Windows executable
         run: |
           pip install pyinstaller
-          pyinstaller --onefile --windowed --name "HoMM3-AI-Opponent" homm3_ai_ultra_simple.py
+          pyinstaller --onefile --windowed --name "HoMM3-AI-Opponent" --add-data "VERSION.txt;." homm3_ai_ultra_simple.py
           
       - name: Verify executable exists
         run: |
@@ -30,6 +35,7 @@ jobs:
         with:
           name: HoMM3-AI-Opponent-Windows
           path: dist/HoMM3-AI-Opponent.exe
+
   create-release:
     needs: [build-windows]
     runs-on: ubuntu-latest
