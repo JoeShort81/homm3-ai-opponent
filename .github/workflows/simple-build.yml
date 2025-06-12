@@ -18,7 +18,7 @@ jobs:
       - name: Build Windows executable
         run: |
           pip install pyinstaller
-          pyinstaller --onefile --windowed --name "HoMM3-AI-Opponent" homm3_ai_simple.py
+          pyinstaller --onefile --windowed --name "HoMM3-AI-Opponent" homm3_ai_ultra_simple.py
           
       - name: Verify executable exists
         run: |
